@@ -8,6 +8,7 @@
 <body>
     <h1>Books List</h1>
     <a href="{{ route('books.create') }}">Add New Book</a>
+    <a href="{{ route('books.trashed') }}">View Trashed Book</a>
     
     {{-- Add search functionality --}}
     <form method="GET" action="{{ route('books.index') }}">

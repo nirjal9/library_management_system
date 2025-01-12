@@ -19,7 +19,7 @@ return new class extends Migration
         $table->integer('published_year'); // Year of publication
         $table->text('description')->nullable(); // Optional description
         $table->timestamps();            // Created_at and Updated_at
-        $table->softDeletes(); //deleted_at for soft deletes
+        $table->softDeletes(); //deleted_at for soft delete
     });
 }
 

@@ -90,4 +90,24 @@ class BookController extends Controller
         $book->delete(); //Soft Deletes the book from the database
         return redirect()->route('books.index')->with('success','Book deleted successfully.');
     }
+
+    public function trashed()
+    {
+        $books = Book::onlyTrashed()->get();
+dd($books); // Temporarily dump the books for debugging
+
+    }
+    
+
+    
+
+
+    public function restore($id)
+    {
+        $book = Book::onlyTrashed()->findOrFail($id); // Find the soft-deleted book
+        $book->restore(); // Restore the book
+        return redirect()->route('books.trashed')->with('success', 'Book restored successfully.');
+    }
+    
+
 }
