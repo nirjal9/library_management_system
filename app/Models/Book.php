@@ -16,5 +16,10 @@ class Book extends Model
         'isbn',
         'published_year',
         'description',
+        'is_borrowed',
     ];
+    public function borrows()
+{
+    return $this->hasMany(Borrow::class);
+}
 }

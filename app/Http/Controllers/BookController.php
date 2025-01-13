@@ -13,12 +13,20 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $availability = $request->input('availability');
+
     $books = Book::when($search, function ($query, $search) { //when(): Dynamically applies the search filter only if $search is provided.
         $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%']) //whereRaw(): Allows raw SQL to apply the LOWER() function for case-insensitive search.
               ->orWhereRaw('LOWER(author) LIKE ?', ['%' . strtolower($search) . '%']) //orWhereRaw(): Extends the search to additional fields like description.
               ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($search) . '%'])
               ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
-            })->get();
+            })->when($availability, function ($query, $availability) {
+        if ($availability === 'available') {
+            $query->where('is_borrowed', false); // Show only available books
+        } elseif ($availability === 'borrowed') {
+            $query->where('is_borrowed', true); // Show only borrowed books
+        }
+    })->get();
 
         //Retrive all books
         // $books =Book::all();
@@ -123,5 +131,43 @@ class BookController extends Controller
         return redirect()->route('books.trashed')->with('success', 'Book restored successfully.');
     }
     
+    public function borrow(Request $request, Book $book)
+    {
+        // Ensure the book is not already borrowed
+        if ($book->is_borrowed) {
+            return redirect()->back()->with('error', 'This book is already borrowed.');
+        }
+    
+        // Create a borrow record
+        $book->borrows()->create([
+            'user_id' => auth()->id(),
+            'borrowed_at' => now(),
+        ]);
+    
+        // Update the is_borrowed status
+        $book->update(['is_borrowed' => true]);
+        // dd($book); // Debug the book object after the update
+        return redirect()->route('books.index')->with('success', 'Book borrowed successfully!');
+    }
+
+
+    public function returnBook(Request $request, Book $book)
+{
+    // Check if the book is actually borrowed
+    if (!$book->is_borrowed) {
+        return redirect()->back()->with('error', 'This book is not currently borrowed.');
+    }
+
+    // Find the most recent borrow record for this book
+    $borrow = $book->borrows()->whereNull('returned_at')->first();
+    if ($borrow) {
+        $borrow->update(['returned_at' => now()]); // Mark as returned
+    }
+
+    // Update the book's is_borrowed status
+    $book->update(['is_borrowed' => false]);
+
+    return redirect()->route('books.index')->with('success', 'Book returned successfully!');
+}
 
 }

@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+
+    public function borrows()
+{
+    return $this->hasMany(Borrow::class);
+}
 }

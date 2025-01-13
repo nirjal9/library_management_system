@@ -16,9 +16,18 @@
     {{-- Add search functionality --}}
     <form method="GET" action="{{ route('books.index') }}">
         <input type="text" name="search" placeholder="Search by Title, Author, or ISBN" value="{{ request('search') }}">
+
+        <!-- Availability Dropdown -->
+        <select name="availability">
+            <option value="">All</option>
+            <option value="available" {{ request('availability') == 'available' ? 'selected' : '' }}>Available</option>
+            <option value="borrowed" {{ request('availability') == 'borrowed' ? 'selected' : '' }}>Borrowed</option>
+        </select>
+
+        <!-- Submit Button -->
         <button type="submit">Search</button>
     </form>
-    
+
     <table border="1">
         <thead>
             <tr>
@@ -39,11 +48,26 @@
                 <td>
                     <a href="{{ route('books.show', $book->id) }}">View</a>
                     <a href="{{ route('books.edit', $book->id) }}">Edit</a>
+
+                    <!-- Delete Form -->
                     <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
                     </form>
+
+                    <!-- Borrow Form -->
+                    @if ($book->is_borrowed)
+        <form action="{{ route('books.return', $book->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit">Return</button>
+        </form>
+    @else
+        <form action="{{ route('books.borrow', $book->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit">Borrow</button>
+        </form>
+                    @endif
                 </td>
             </tr>
             @endforeach

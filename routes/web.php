@@ -102,6 +102,9 @@ Route::get('/books/trashed', [BookController::class, 'trashed'])->name('books.tr
 
 Route::patch('/books/{book}/restore', [BookController::class, 'restore'])->name('books.restore');
 
+Route::post('/books/{book}/borrow', [BookController::class, 'borrow'])->name('books.borrow');
+
+
 
 Auth::routes();
 
@@ -115,3 +118,5 @@ Route::resource('publishers', PublisherController::class);
 
 // Borrower routes
 Route::resource('borrowers', BorrowerController::class);
+Route::post('/books/{book}/return', [BookController::class, 'returnBook'])->name('books.return');
+
