@@ -61,4 +61,12 @@ class BorrowerController extends Controller
     {
         //
     }
+
+    public function history()
+{
+    $borrows = \App\Models\Borrow::with(['book', 'user'])->paginate(10); // Show 10 records per page
+    return view('borrows.history', compact('borrows'));
+}
+
+
 }

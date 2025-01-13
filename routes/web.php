@@ -120,3 +120,8 @@ Route::resource('publishers', PublisherController::class);
 Route::resource('borrowers', BorrowerController::class);
 Route::post('/books/{book}/return', [BookController::class, 'returnBook'])->name('books.return');
 
+//Borrow history routes
+Route::get('/borrows/history', [App\Http\Controllers\BorrowerController::class, 'history'])->name('borrows.history');
+
+
+
