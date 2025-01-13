@@ -33,16 +33,33 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        return view('books.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'author' => 'required|string|max:255',
+        'isbn' => 'required|string|unique:books,isbn',
+        'published_year' => 'required|integer|min:1000|max:9999',
+        'description' => 'required|string',
+    ]);
+
+    $book = Book::create([
+        'title' => $request->title,
+        'author' => $request->author,
+        'isbn' => $request->isbn,
+        'published_year' => $request->published_year,
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Book created successfully!');
+}
+
 
     /**
      * Display the specified resource.
@@ -94,13 +111,10 @@ class BookController extends Controller
     public function trashed()
     {
         $books = Book::onlyTrashed()->get();
-dd($books); // Temporarily dump the books for debugging
+    return view('books.trashed', compact('books'));
 
     }
     
-
-    
-
 
     public function restore($id)
     {

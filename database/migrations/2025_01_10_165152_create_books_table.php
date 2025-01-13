@@ -16,7 +16,7 @@ return new class extends Migration
         $table->string('title');         // Book title
         $table->string('author');        // Author's name
         $table->string('isbn')->unique(); // ISBN number
-        $table->integer('published_year'); // Year of publication
+        $table->integer('published_year');// Year of publication
         $table->text('description')->nullable(); // Optional description
         $table->timestamps();            // Created_at and Updated_at
         $table->softDeletes(); //deleted_at for soft delete

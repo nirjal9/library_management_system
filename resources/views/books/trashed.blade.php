@@ -7,8 +7,8 @@
 </head>
 <body>
 
-    {{-- Debugging output: Display the raw data --}}
-    <pre>{{ print_r($books->toArray()) }}</pre>
+    
+    
 
     <h1>Trashed Books</h1>
     <a href="{{ route('books.index') }}">Back to Book List</a>

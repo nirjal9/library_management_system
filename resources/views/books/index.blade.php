@@ -7,7 +7,10 @@
 </head>
 <body>
     <h1>Books List</h1>
-    <a href="{{ route('books.create') }}">Add New Book</a>
+    <a href="{{ route('books.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Book
+    </a>
+    
     <a href="{{ route('books.trashed') }}">View Trashed Book</a>
     
     {{-- Add search functionality --}}

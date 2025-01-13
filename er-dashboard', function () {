@@ -1,0 +1,20 @@
+[90m= [39m[34;4mIlluminate\Routing\Route[39;24m {#6359
+    +[1muri[22m: "[32mdashboard[39m",
+    +[1mmethods[22m: [
+      "[32mGET[39m",
+      "[32mHEAD[39m",
+    ],
+    +[1maction[22m: [
+      "[34muses[39m" => [34;4mClosure()[39;24m {#6179 …2},
+      "[34mas[39m" => "[32mdashboard[39m",
+    ],
+    +[1misFallback[22m: [36mfalse[39m,
+    +[1mcontroller[22m: [36mnull[39m,
+    +[1mdefaults[22m: [],
+    +[1mwheres[22m: [],
+    +[1mparameters[22m: [36mnull[39m,
+    +[1mparameterNames[22m: [36mnull[39m,
+    +[1mcomputedMiddleware[22m: [36mnull[39m,
+    +[1mcompiled[22m: [36mnull[39m,
+  }
+
