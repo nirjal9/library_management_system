@@ -9,7 +9,88 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Welcome to the User Dashboard!
+                    <h3 class="text-lg font-bold mb-4">Welcome, {{ Auth::user()->name }}!</h3>
+
+                    <!-- User Profile Section -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold">Your Profile</h4>
+                        <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
+                        <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                    </div>
+
+                    <!-- Borrowed Books Section -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold">Borrowed Books</h4>
+                        <table class="table-auto w-full border">
+                            <thead>
+                                <tr>
+                                    <th class="border px-4 py-2">ID</th>
+                                    <th class="border px-4 py-2">Title</th>
+                                    <th class="border px-4 py-2">Author</th>
+                                    <th class="border px-4 py-2">Borrowed At</th>
+                                    <th class="border px-4 py-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($borrowedBooks as $book)
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ $book->id }}</td>
+                                        <td class="border px-4 py-2">{{ $book->title }}</td>
+                                        <td class="border px-4 py-2">{{ $book->author }}</td>
+                                        <td class="border px-4 py-2">{{ $book->borrowed_at }}</td>
+                                        <td class="border px-4 py-2">
+                                            <form action="{{ route('books.return', $book->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 rounded">
+                                                    Return
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="border px-4 py-2 text-center">No borrowed books</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Available Books Section -->
+                    <div>
+                        <h4 class="text-md font-semibold">Available Books</h4>
+                        <table class="table-auto w-full border">
+                            <thead>
+                                <tr>
+                                    <th class="border px-4 py-2">ID</th>
+                                    <th class="border px-4 py-2">Title</th>
+                                    <th class="border px-4 py-2">Author</th>
+                                    <th class="border px-4 py-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($availableBooks as $book)
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ $book->id }}</td>
+                                        <td class="border px-4 py-2">{{ $book->title }}</td>
+                                        <td class="border px-4 py-2">{{ $book->author }}</td>
+                                        <td class="border px-4 py-2">
+                                            <form action="{{ route('books.borrow', $book->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
+                                                    Borrow
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="border px-4 py-2 text-center">No available books</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

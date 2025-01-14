@@ -8,18 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, $roles)
     {
-        if (auth()->check() && auth()->user()->role === $role) {
-            return $next($request);
+        // Convert roles from a string (e.g., 'admin|user') to an array
+        $rolesArray = explode('|', $roles);
+
+        // Check if the user's role matches any of the allowed roles
+        if (!$request->user() || !in_array($request->user()->role, $rolesArray)) {
+            return redirect('/unauthorized'); // Redirect to the unauthorized page
         }
-        // Redirect unauthorized users
-    abort(403, 'Unauthorized access.');
-        
+
+        return $next($request);
     }
 }

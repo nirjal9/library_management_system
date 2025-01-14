@@ -1,0 +1,13 @@
+[90m= [39m[34;4mApp\Models\Book[39;24m {#6236
+    [34mid[39m: [35m1[39m,
+    [34mtitle[39m: "[32mPHP[39m",
+    [34mauthor[39m: "[32mhjvhjvhj[39m",
+    [34misbn[39m: "[32m2020[39m",
+    [34mpublished_year[39m: [35m2012[39m,
+    [34mdescription[39m: "[32mhjvhjvhjvhjvhj[39m",
+    [34mcreated_at[39m: "[32m2025-01-13 15:18:07[39m",
+    [34mupdated_at[39m: "[32m2025-01-14 05:34:23[39m",
+    [34mdeleted_at[39m: [36mnull[39m,
+    [34mis_borrowed[39m: [35m1[39m,
+  }
+

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -147,7 +148,7 @@ class BookController extends Controller
         // Update the is_borrowed status
         $book->update(['is_borrowed' => true]);
         // dd($book); // Debug the book object after the update
-        return redirect()->route('books.index')->with('success', 'Book borrowed successfully!');
+        return redirect()->route('user.dashboard')->with('success', 'Book borrowed successfully!');
     }
 
 
@@ -158,8 +159,9 @@ class BookController extends Controller
         return redirect()->back()->with('error', 'This book is not currently borrowed.');
     }
 
-    // Find the most recent borrow record for this book
-    $borrow = $book->borrows()->whereNull('returned_at')->first();
+    // Find the most recent borrow record for this book where returned_at is NULL
+    $borrow = $book->borrows()->whereNull('returned_at')->latest('borrowed_at')->first();
+
     if ($borrow) {
         $borrow->update(['returned_at' => now()]); // Mark as returned
     }
@@ -167,7 +169,30 @@ class BookController extends Controller
     // Update the book's is_borrowed status
     $book->update(['is_borrowed' => false]);
 
-    return redirect()->route('books.index')->with('success', 'Book returned successfully!');
+    return redirect()->route('user.dashboard')->with('success', 'Book returned successfully!');
 }
 
+    
+
+    public function userDashboard()
+    {
+        $borrowedBooks = Auth::user()
+            ->borrows()
+            ->whereNull('returned_at') // Only get unreturned borrows
+            ->with('book') // Eager load the related book
+            ->get()
+            ->unique('book_id') // Ensure each book is listed only once
+            ->map(function ($borrow) {
+                $borrow->book->borrowed_at = $borrow->borrowed_at; // Attach borrowed_at to the book
+                return $borrow->book;
+            });
+    
+        $availableBooks = Book::where('is_borrowed', false)->get();
+    
+        return view('user.dashboard', compact('borrowedBooks', 'availableBooks'));
+    }
+    
+
+
+    
 }
