@@ -17,9 +17,11 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="author" class="block text-gray-700">Author</label>
-                            <input type="text" name="author" id="author" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                            <label for="authors" class="block text-gray-700">Authors</label>
+                            <input type="text" name="authors" id="authors" placeholder="Enter authors separated by commas" class="w-full border-gray-300 rounded-md shadow-sm" required>
                         </div>
+                        
+                        
 
                         <div class="mb-4">
                             <label for="isbn" class="block text-gray-700">ISBN</label>
@@ -29,7 +31,6 @@
                         <div class="mb-4">
                             <label for="published_year" class="block text-gray-700">Published Year</label>
                             <input type="number" name="published_year" id="published_year" class="w-full border-gray-300 rounded-md shadow-sm" required>
-                            
                         </div>
 
                         <div class="mb-4">
@@ -46,4 +47,3 @@
         </div>
     </div>
 </x-app-layout>
-

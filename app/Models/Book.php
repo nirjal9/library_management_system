@@ -12,7 +12,7 @@ class Book extends Model
     
     protected $fillable = [
         'title',
-        'author',
+        'authors',
         'isbn',
         'published_year',
         'description',
@@ -23,4 +23,10 @@ class Book extends Model
     {
     return $this->hasMany(Borrow::class);
     }
+
+    public function authors()
+    {   
+    return $this->belongsToMany(Author::class);
+    }
+
 }

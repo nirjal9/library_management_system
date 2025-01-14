@@ -18,7 +18,7 @@ class BookController extends Controller
 
     $books = Book::when($search, function ($query, $search) { //when(): Dynamically applies the search filter only if $search is provided.
         $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%']) //whereRaw(): Allows raw SQL to apply the LOWER() function for case-insensitive search.
-              ->orWhereRaw('LOWER(author) LIKE ?', ['%' . strtolower($search) . '%']) //orWhereRaw(): Extends the search to additional fields like description.
+              ->orWhereRaw('LOWER(authors) LIKE ?', ['%' . strtolower($search) . '%']) //orWhereRaw(): Extends the search to additional fields like description.
               ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($search) . '%'])
               ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
             })->when($availability, function ($query, $availability) {
@@ -42,32 +42,35 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $authors = \App\Models\Author::all(); // Fetch all authors
+        return view('books.create', compact('authors'));
     }
+    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'author' => 'required|string|max:255',
-        'isbn' => 'required|string|unique:books,isbn',
-        'published_year' => 'required|integer|min:1000|max:9999',
-        'description' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'authors' => 'required|string|max:255', // Allow a string of multiple authors
+            'isbn' => 'required|string|unique:books,isbn',
+            'published_year' => 'required|integer|min:1000|max:9999',
+            'description' => 'required|string',
+        ]);
 
     $book = Book::create([
         'title' => $request->title,
-        'author' => $request->author,
+        'authors' => $request->authors,
         'isbn' => $request->isbn,
         'published_year' => $request->published_year,
         'description' => $request->description,
     ]);
+    // $book->authors()->sync($request->authors); // Sync authors with the book
 
     return redirect()->route('dashboard')->with('success', 'Book created successfully!');
-}
+    }
 
 
     /**
@@ -95,7 +98,7 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
+            'authors' => 'nullable|string|max:255',
             'isbn' => 'required|unique:books,isbn,' . $book->id,
             'published_year' => 'required|integer',
             'description' => 'nullable|string',

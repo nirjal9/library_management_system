@@ -17,7 +17,7 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Author</th>
+                <th>Authors</th>
                 <th>ISBN</th>
                 <th>Actions</th>
             </tr>
@@ -27,7 +27,7 @@
                 <tr>
                     <td>{{ $book->id }}</td>
                     <td>{{ $book->title }}</td>
-                    <td>{{ $book->author }}</td>
+                    <td>{{ $book->authors }}</td>
                     <td>{{ $book->isbn }}</td>
                     <td>
                         <form action="{{ route('books.restore', $book->id) }}" method="POST" style="display: inline;">

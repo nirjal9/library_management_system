@@ -74,6 +74,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('borrowers', BorrowerController::class);
 });
 
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::post('/books/{book}/borrow', [BookController::class, 'borrow'])->name('books.borrow');
+    Route::post('/books/{book}/return', [BookController::class, 'returnBook'])->name('books.return');
+});
+
+
 // Borrow history route for users
 Route::get('/borrows/history', [App\Http\Controllers\BorrowerController::class, 'history'])->name('borrows.history')->middleware('auth', 'role:user');
 
