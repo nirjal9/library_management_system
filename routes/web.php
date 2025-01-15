@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Auth; // This ensures Auth is recognized
 use Illuminate\Support\Facades\Route;
 
@@ -86,3 +87,10 @@ Route::get('/borrows/history', [App\Http\Controllers\BorrowerController::class, 
 Route::get('/unauthorized', function () {
     return view('unauthorized');
 })->name('unauthorized');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+});
+

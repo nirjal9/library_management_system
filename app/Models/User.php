@@ -58,4 +58,12 @@ class User extends Authenticatable
     {
     return $this->hasMany(Borrow::class);
     }
+
+    public function profile()
+    {
+    return $this->hasOne(UserProfile::class);
+    }
+
+    
+
 }
