@@ -29,4 +29,15 @@ class Book extends Model
     return $this->belongsToMany(Author::class);
     }
 
+    //One-to-Many relationship with publisher
+    public function publisher()
+    {   
+    return $this->belongsTo(Publisher::class);
+    }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
 }

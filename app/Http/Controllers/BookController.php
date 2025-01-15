@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -76,10 +77,15 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        // Fetch the book with its associated reviews
+        $book = Book::with('reviews')->findOrFail($id);
+    
+        // Pass the book to the view
+        return view('books.show', compact('book'));
     }
+    
 
     /**
      * Show the form for editing the specified resource(book's details).
@@ -195,7 +201,27 @@ class BookController extends Controller
         return view('user.dashboard', compact('borrowedBooks', 'availableBooks'));
     }
     
-
-
+    public function addReview(Request $request, $id)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to submit a review.');
+        }
+    
+        $request->validate([
+            'content' => 'required|string|max:1000',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+    
+        $book = Book::findOrFail($id);
+    
+        $book->reviews()->create([
+            'content' => $request->input('content'),
+            'rating' => $request->input('rating'),
+            'user_id' => auth()->id(),
+        ]);
+    
+        return redirect()->route('books.show', $id)->with('success', 'Review added successfully!');
+    }
+    
     
 }

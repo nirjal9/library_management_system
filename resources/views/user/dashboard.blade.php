@@ -26,7 +26,7 @@
                                 <tr>
                                     <th class="border px-4 py-2">ID</th>
                                     <th class="border px-4 py-2">Title</th>
-                                    <th class="border px-4 py-2">Author</th>
+                                    <th class="border px-4 py-2">Authors</th>
                                     <th class="border px-4 py-2">Borrowed At</th>
                                     <th class="border px-4 py-2">Actions</th>
                                 </tr>
@@ -36,7 +36,7 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $book->id }}</td>
                                         <td class="border px-4 py-2">{{ $book->title }}</td>
-                                        <td class="border px-4 py-2">{{ $book->author }}</td>
+                                        <td class="border px-4 py-2">{{ $book->authors }}</td>
                                         <td class="border px-4 py-2">{{ $book->borrowed_at }}</td>
                                         <td class="border px-4 py-2">
                                             <form action="{{ route('books.return', $book->id) }}" method="POST">
@@ -64,7 +64,7 @@
                                 <tr>
                                     <th class="border px-4 py-2">ID</th>
                                     <th class="border px-4 py-2">Title</th>
-                                    <th class="border px-4 py-2">Author</th>
+                                    <th class="border px-4 py-2">Authors</th>
                                     <th class="border px-4 py-2">Actions</th>
                                 </tr>
                             </thead>
@@ -73,7 +73,7 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $book->id }}</td>
                                         <td class="border px-4 py-2">{{ $book->title }}</td>
-                                        <td class="border px-4 py-2">{{ $book->author }}</td>
+                                        <td class="border px-4 py-2">{{ $book->authors }}</td>
                                         <td class="border px-4 py-2">
                                             <form action="{{ route('books.borrow', $book->id) }}" method="POST">
                                                 @csrf

@@ -94,3 +94,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 });
 
+Route::post('/books/{id}/reviews', [BookController::class, 'addReview'])->name('books.addReview');
+
+
