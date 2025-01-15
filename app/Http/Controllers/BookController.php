@@ -18,12 +18,15 @@ class BookController extends Controller
         $search = $request->input('search');
         $availability = $request->input('availability');
 
-    $books = Book::with('authors') ->when($search, function ($query, $search) { //when(): Dynamically applies the search filter only if $search is provided.
-        $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%']) //whereRaw(): Allows raw SQL to apply the LOWER() function for case-insensitive search.
-              ->orWhereRaw('LOWER(authors) LIKE ?', ['%' . strtolower($search) . '%']) //orWhereRaw(): Extends the search to additional fields like description.
-              ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($search) . '%'])
-              ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%']);
-            })->when($availability, function ($query, $availability) {
+        $books = Book::with('authors')
+        ->when($search, function ($query, $search) {
+            $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereHas('authors', function ($authorQuery) use ($search) {
+                      $authorQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                  });
+        })->when($availability, function ($query, $availability) {
         if ($availability === 'available') {
             $query->where('is_borrowed', false); // Show only available books
         } elseif ($availability === 'borrowed') {

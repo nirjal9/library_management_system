@@ -19,7 +19,9 @@
        {{-- $book->title is Blade's way of outputting dynamic data passed from the controller. --}}
 
         <label for="author">Author:</label>
-        <input type="text" id="author" name="author" value="{{ $book->authors }}" required><br><br>
+        <input type="text" id="author" name="author" value="@foreach($book->authors as $author)
+            {{ $author->name }}{{ !$loop->last ? ', ' : '' }}
+        @endforeach" required><br><br>
 
         <label for="isbn">ISBN:</label>
         <input type="text" id="isbn" name="isbn" value="{{ $book->isbn }}" required><br><br>
