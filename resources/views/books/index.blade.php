@@ -44,7 +44,9 @@
             <tr>
                 <td>{{ $book->id }}</td>
                 <td>{{ $book->title }}</td>
-                <td>{{ $book->authors }}</td>
+                <td>{{ $book->authors->pluck('name')->join(', ') }}</td>
+
+                
                 <td>{{ $book->isbn }}</td>
                 <td>
                     <a href="{{ route('books.show', $book->id) }}">View</a>

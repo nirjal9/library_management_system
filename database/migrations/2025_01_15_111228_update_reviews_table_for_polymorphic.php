@@ -12,10 +12,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reviews', function (Blueprint $table) {
-            $table->unsignedBigInteger('reviewable_id');
-            $table->string('reviewable_type');
+            if (!Schema::hasColumn('reviews', 'reviewable_id')) {
+                $table->unsignedBigInteger('reviewable_id');
+            }
+            if (!Schema::hasColumn('reviews', 'reviewable_type')) {
+                $table->string('reviewable_type');
+            }
         });
     }
+    
     
 
     /**

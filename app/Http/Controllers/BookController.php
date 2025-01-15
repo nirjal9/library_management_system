@@ -18,7 +18,7 @@ class BookController extends Controller
         $search = $request->input('search');
         $availability = $request->input('availability');
 
-    $books = Book::when($search, function ($query, $search) { //when(): Dynamically applies the search filter only if $search is provided.
+    $books = Book::with('authors') ->when($search, function ($query, $search) { //when(): Dynamically applies the search filter only if $search is provided.
         $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%']) //whereRaw(): Allows raw SQL to apply the LOWER() function for case-insensitive search.
               ->orWhereRaw('LOWER(authors) LIKE ?', ['%' . strtolower($search) . '%']) //orWhereRaw(): Extends the search to additional fields like description.
               ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($search) . '%'])
@@ -57,14 +57,14 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'authors' => 'required|string|max:255', // Comma-separated authors
+            'authors' => 'required|string', // Comma-separated authors
             'isbn' => 'required|string|unique:books,isbn',
             'published_year' => 'required|integer|min:1000|max:9999',
             'description' => 'required|string',
-            'publisher_id' => 'required|exists:publishers,id', // Ensure publisher exists
+            'publisher_id' => 'required|exists:publishers,id',
         ]);
     
-        // Create the book first
+        // Create the book
         $book = Book::create([
             'title' => $request->title,
             'isbn' => $request->isbn,
@@ -73,14 +73,14 @@ class BookController extends Controller
             'publisher_id' => $request->publisher_id,
         ]);
     
-        // Process the authors
+        // Process authors
         $authorNames = explode(',', $request->authors);
         $authorIds = [];
     
         foreach ($authorNames as $name) {
             $name = trim($name);
             if (!empty($name)) {
-                $author = \App\Models\Author::firstOrCreate(['name' => $name]);
+                $author = Author::firstOrCreate(['name' => $name]);
                 $authorIds[] = $author->id;
             }
         }
@@ -90,6 +90,7 @@ class BookController extends Controller
     
         return redirect()->route('books.index')->with('success', 'Book created successfully!');
     }
+    
     
 
 

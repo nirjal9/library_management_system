@@ -10,7 +10,9 @@
     <div class="container mt-4">
         <h1>Book Details</h1>
         <p><strong>Title:</strong> {{ $book->title }}</p>
-        <p><strong>Authors:</strong> {{ $book->authors }}</p> <!-- Updated key to match your Book model -->
+        <p><strong>Authors:</strong> @foreach($book->authors as $author)
+            {{ $author->name }}{{ !$loop->last ? ', ' : '' }}
+        @endforeach</p> <!-- Updated key to match your Book model -->
         <p><strong>ISBN:</strong> {{ $book->isbn }}</p>
         <p><strong>Published Year:</strong> {{ $book->published_year }}</p>
         <p><strong>Description:</strong> {{ $book->description }}</p>
