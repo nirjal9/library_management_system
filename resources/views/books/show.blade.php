@@ -10,10 +10,11 @@
     <div class="container mt-4">
         <h1>Book Details</h1>
         <p><strong>Title:</strong> {{ $book->title }}</p>
-        <p><strong>Author:</strong> {{ $book->authors }}</p> <!-- Updated key to match your Book model -->
+        <p><strong>Authors:</strong> {{ $book->authors }}</p> <!-- Updated key to match your Book model -->
         <p><strong>ISBN:</strong> {{ $book->isbn }}</p>
         <p><strong>Published Year:</strong> {{ $book->published_year }}</p>
         <p><strong>Description:</strong> {{ $book->description }}</p>
+        <p><strong>Publisher:</strong> {{ $book->publisher->name }}</p>
         <a href="{{ route('books.index') }}" class="btn btn-primary">Back to Book List</a>
 
         <hr>

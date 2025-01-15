@@ -28,7 +28,7 @@ class BookController extends Controller
         } elseif ($availability === 'borrowed') {
             $query->where('is_borrowed', true); // Show only borrowed books
         }
-    })->get();
+    })->paginate(10);//Use pagination
 
         //Retrive all books
         // $books =Book::all();
@@ -43,8 +43,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        $authors = \App\Models\Author::all(); // Fetch all authors
-        return view('books.create', compact('authors'));
+    $authors = \App\Models\Author::all();
+    $publishers = \App\Models\Publisher::all(); // Fetch all publishers
+    return view('books.create', compact('authors', 'publishers'));
     }
     
 
@@ -59,6 +60,7 @@ class BookController extends Controller
             'isbn' => 'required|string|unique:books,isbn',
             'published_year' => 'required|integer|min:1000|max:9999',
             'description' => 'required|string',
+            'publisher_id' => 'required|exists:publishers,id', // Validate publisher_id
         ]);
 
     $book = Book::create([
@@ -67,6 +69,7 @@ class BookController extends Controller
         'isbn' => $request->isbn,
         'published_year' => $request->published_year,
         'description' => $request->description,
+        'publisher_id'=> $request->publisher_id,
     ]);
     // $book->authors()->sync($request->authors); // Sync authors with the book
 
@@ -92,9 +95,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-       
-        //load the edit.blade.php view and pass the specific book to it
-        return view('books.edit',compact('book')); //compact creates an associative array where the key is 'book' and the value is the $book object
+        $authors = \App\Models\Author::all();
+        $publishers = \App\Models\Publisher::all(); // Fetch all publishers
+        return view('books.edit', compact('book', 'authors', 'publishers'));
     }
 
     /**
@@ -108,6 +111,7 @@ class BookController extends Controller
             'isbn' => 'required|unique:books,isbn,' . $book->id,
             'published_year' => 'required|integer',
             'description' => 'nullable|string',
+            'publisher_id' => 'required|exists:publishers,id',
         ]);
 
         $book->update($request->all()); 

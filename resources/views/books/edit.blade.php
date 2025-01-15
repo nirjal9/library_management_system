@@ -19,7 +19,7 @@
        {{-- $book->title is Blade's way of outputting dynamic data passed from the controller. --}}
 
         <label for="author">Author:</label>
-        <input type="text" id="author" name="author" value="{{ $book->author }}" required><br><br>
+        <input type="text" id="author" name="author" value="{{ $book->authors }}" required><br><br>
 
         <label for="isbn">ISBN:</label>
         <input type="text" id="isbn" name="isbn" value="{{ $book->isbn }}" required><br><br>
@@ -27,6 +27,17 @@
         <label for="published_year">Published Year:</label>
         <input type="number" id="published_year" name="published_year" value="{{ $book->published_year }}" required><br><br>
 
+        <div>
+            <label for="publisher">Publisher</label>
+            <select name="publisher_id" id="publisher">
+                @foreach($publishers as $publisher)
+                    <option value="{{ $publisher->id }}" {{ old('publisher_id', $book->publisher_id ?? '') == $publisher->id ? 'selected' : '' }}>
+                        {{ $publisher->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        
         <label for="description">Description:</label>
         <textarea id="description" name="description">{{ $book->description }}</textarea><br><br>
 

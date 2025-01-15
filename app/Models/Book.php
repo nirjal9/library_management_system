@@ -17,6 +17,7 @@ class Book extends Model
         'published_year',
         'description',
         'is_borrowed',
+        'publisher_id'
     ];
 
     public function borrows()

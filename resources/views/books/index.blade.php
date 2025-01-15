@@ -6,6 +6,7 @@
     <title>Books List</title>
 </head>
 <body>
+    
     <h1>Books List</h1>
     <a href="{{ route('books.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Create Book
@@ -68,10 +69,17 @@
             <button type="submit">Borrow</button>
         </form>
                     @endif
+
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+<!-- Pagination Links -->
+<div class="mt-4">
+    {{ $books->links('pagination::bootstrap-4') }}
+</div>
+
 </body>
 </html>

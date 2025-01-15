@@ -33,6 +33,18 @@
                             <input type="number" name="published_year" id="published_year" class="w-full border-gray-300 rounded-md shadow-sm" required>
                         </div>
 
+                        <div>
+                            <label for="publisher">Publisher</label>
+                            <select name="publisher_id" id="publisher">
+                                @foreach($publishers as $publisher)
+                                    <option value="{{ $publisher->id }}" {{ old('publisher_id', $book->publisher_id ?? '') == $publisher->id ? 'selected' : '' }}>
+                                        {{ $publisher->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+
                         <div class="mb-4">
                             <label for="description" class="block text-gray-700">Description</label>
                             <textarea name="description" id="description" class="w-full border-gray-300 rounded-md shadow-sm" rows="4" required></textarea>
