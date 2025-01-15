@@ -11,12 +11,21 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="text-lg font-bold mb-4">Welcome, {{ Auth::user()->name }}!</h3>
 
+                    
+
                     <!-- User Profile Section -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold">Your Profile</h4>
                         <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
                         <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
                     </div>
+
+                    <!-- Go to Book List Button -->
+<div class="mb-6">
+    <a href="{{ url('/books') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Go to Book List
+    </a>
+</div>
 
                     <!-- Borrowed Books Section -->
                     <div class="mb-6">
@@ -36,7 +45,9 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $book->id }}</td>
                                         <td class="border px-4 py-2">{{ $book->title }}</td>
-                                        <td class="border px-4 py-2">{{ $book->authors }}</td>
+                                        <td class="border px-4 py-2">@foreach($book->authors as $author)
+                                            {{ $author->name }}{{ !$loop->last ? ', ' : '' }}
+                                        @endforeach</td>
                                         <td class="border px-4 py-2">{{ $book->borrowed_at }}</td>
                                         <td class="border px-4 py-2">
                                             <form action="{{ route('books.return', $book->id) }}" method="POST">
@@ -68,12 +79,16 @@
                                     <th class="border px-4 py-2">Actions</th>
                                 </tr>
                             </thead>
+                            
                             <tbody>
                                 @forelse($availableBooks as $book)
                                     <tr>
                                         <td class="border px-4 py-2">{{ $book->id }}</td>
                                         <td class="border px-4 py-2">{{ $book->title }}</td>
-                                        <td class="border px-4 py-2">{{ $book->authors }}</td>
+                                        <td class="border px-4 py-2">@foreach($book->authors as $author)
+                                            {{ $author->name }}{{ !$loop->last ? ', ' : '' }}
+                                        @endforeach
+                                        </td>
                                         <td class="border px-4 py-2">
                                             <form action="{{ route('books.borrow', $book->id) }}" method="POST">
                                                 @csrf
@@ -91,8 +106,12 @@
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
+                
             </div>
+            
         </div>
+        
     </div>
 </x-app-layout>

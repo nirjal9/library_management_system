@@ -72,7 +72,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Author routes (admin only)
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('authors', AuthorController::class);
-    Route::resource('publishers', PublisherController::class);
+    Route::resource('publishers', PublisherController::class)->except(['show']);;
     Route::resource('borrowers', BorrowerController::class);
 });
 
@@ -96,10 +96,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
-Route::get('/publishers/{id}', [PublisherController::class, 'show'])->name('publishers.show');
+Route::get('/publishers/{id}', [PublisherController::class, 'show'])->name('publishers.show')->middleware('auth');
 
 
 Route::post('/reviews/{type}/{id}', [ReviewController::class, 'addReview'])->name('addReview');
+
+
 
 
 

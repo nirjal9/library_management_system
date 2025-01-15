@@ -12,7 +12,7 @@
         <p><strong>Name:</strong> {{ $publisher->name }}</p>
         <p><strong>Address:</strong> {{ $publisher->address ?? 'N/A' }}</p>
         <p><strong>Phone:</strong> {{ $publisher->phone ?? 'N/A' }}</p>
-        <a href="{{ route('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        <a href="{{ route('books.index') }}" class="btn btn-primary">Back to Book-List</a>
 
         <hr>
 
