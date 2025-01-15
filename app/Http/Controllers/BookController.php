@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -56,25 +57,40 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'authors' => 'required|string|max:255', // Allow a string of multiple authors
+            'authors' => 'required|string|max:255', // Comma-separated authors
             'isbn' => 'required|string|unique:books,isbn',
             'published_year' => 'required|integer|min:1000|max:9999',
             'description' => 'required|string',
-            'publisher_id' => 'required|exists:publishers,id', // Validate publisher_id
+            'publisher_id' => 'required|exists:publishers,id', // Ensure publisher exists
         ]);
-
-    $book = Book::create([
-        'title' => $request->title,
-        'authors' => $request->authors,
-        'isbn' => $request->isbn,
-        'published_year' => $request->published_year,
-        'description' => $request->description,
-        'publisher_id'=> $request->publisher_id,
-    ]);
-    // $book->authors()->sync($request->authors); // Sync authors with the book
-
-    return redirect()->route('dashboard')->with('success', 'Book created successfully!');
+    
+        // Create the book first
+        $book = Book::create([
+            'title' => $request->title,
+            'isbn' => $request->isbn,
+            'published_year' => $request->published_year,
+            'description' => $request->description,
+            'publisher_id' => $request->publisher_id,
+        ]);
+    
+        // Process the authors
+        $authorNames = explode(',', $request->authors);
+        $authorIds = [];
+    
+        foreach ($authorNames as $name) {
+            $name = trim($name);
+            if (!empty($name)) {
+                $author = \App\Models\Author::firstOrCreate(['name' => $name]);
+                $authorIds[] = $author->id;
+            }
+        }
+    
+        // Attach authors to the book
+        $book->authors()->sync($authorIds);
+    
+        return redirect()->route('books.index')->with('success', 'Book created successfully!');
     }
+    
 
 
     /**
@@ -103,23 +119,35 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book) //update the book record in the database
+    public function update(Request $request, Book $book)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'authors' => 'nullable|string|max:255',
-            'isbn' => 'required|unique:books,isbn,' . $book->id,
-            'published_year' => 'required|integer',
+            'authors' => 'required|string',
+            'isbn' => 'required|string|unique:books,isbn,' . $book->id,
+            'published_year' => 'required|integer|min:1000|max:9999',
             'description' => 'nullable|string',
             'publisher_id' => 'required|exists:publishers,id',
         ]);
-
-        $book->update($request->all()); 
-
-        //After updating, the user is redirected back to the book listing page (books.index route)
-    return redirect()->route('books.index')->with('success', 'Book updated successfully.'); 
-
+    
+        $book->update($request->only(['title', 'isbn', 'published_year', 'description', 'publisher_id']));
+    
+        // Process authors
+        $authorNames = explode(',', $request->authors);
+        $authorIds = [];
+    
+        foreach ($authorNames as $name) {
+            $name = trim($name);
+            $author = Author::firstOrCreate(['name' => $name]);
+            $authorIds[] = $author->id;
+        }
+    
+        // Sync authors with the book
+        $book->authors()->sync($authorIds);
+    
+        return redirect()->route('books.index')->with('success', 'Book updated successfully!');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -205,7 +233,7 @@ class BookController extends Controller
         return view('user.dashboard', compact('borrowedBooks', 'availableBooks'));
     }
     
-    public function addReview(Request $request, $id)
+    public function addReview(Request $request, $type, $id)
     {
         if (!auth()->check()) {
             return redirect()->route('login')->with('error', 'You must be logged in to submit a review.');
@@ -216,16 +244,28 @@ class BookController extends Controller
             'rating' => 'required|integer|min:1|max:5',
         ]);
     
-        $book = Book::findOrFail($id);
+        // Dynamically determine the model class based on the type
+        $modelClass = match ($type) {
+            'book' => \App\Models\Book::class,
+            'publisher' => \App\Models\Publisher::class,
+            'author' => \App\Models\Author::class,
+            default => abort(404, 'Invalid reviewable type.'),
+        };
     
-        $book->reviews()->create([
+        // Find the specific reviewable item
+        $reviewable = $modelClass::findOrFail($id);
+    
+        // Create a review using the polymorphic relationship
+        $reviewable->reviews()->create([
             'content' => $request->input('content'),
             'rating' => $request->input('rating'),
             'user_id' => auth()->id(),
         ]);
     
-        return redirect()->route('books.show', $id)->with('success', 'Review added successfully!');
+        return redirect()->back()->with('success', 'Review added successfully!');
     }
+    
+    
     
     
 }

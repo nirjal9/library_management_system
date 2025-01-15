@@ -10,13 +10,16 @@ class Author extends Model {
 
     protected $fillable = ['name'];
 
-    public function books() {
+    public function books()
+    {
         return $this->belongsToMany(Book::class);
     }
+    
+    
 
     public function reviews()
     {
     return $this->morphMany(Review::class, 'reviewable');
     }
-    
+
 }

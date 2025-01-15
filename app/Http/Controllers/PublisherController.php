@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 
 class PublisherController extends Controller
@@ -33,10 +34,12 @@ class PublisherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $publisher = Publisher::with('reviews')->findOrFail($id);
+        return view('publishers.show', ['publisher' => $publisher, 'type' => 'publisher']);
     }
+    
 
     /**
      * Show the form for editing the specified resource.

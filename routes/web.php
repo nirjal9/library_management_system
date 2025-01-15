@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Auth; // This ensures Auth is recognized
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 });
 
-Route::post('/books/{id}/reviews', [BookController::class, 'addReview'])->name('books.addReview');
+Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
+Route::get('/publishers/{id}', [PublisherController::class, 'show'])->name('publishers.show');
+
+
+Route::post('/reviews/{type}/{id}', [ReviewController::class, 'addReview'])->name('addReview');
+
+
 
 

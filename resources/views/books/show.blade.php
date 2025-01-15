@@ -20,23 +20,23 @@
         <hr>
 
         <h3 class="mt-4">Reviews</h3>
-@if($book->reviews->isEmpty())
-    <p class="text-muted">No reviews yet. Be the first to review this book!</p>
-@else
-    @foreach($book->reviews as $review)
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Rating: {{ $review->rating }} / 5</h5>
-                <p class="card-text">{{ $review->content }}</p>
-                
-                <footer class="blockquote-footer">
-                    Reviewed by {{ $review->user->name ?? 'Anonymous' }} on {{ $review->created_at->format('F j, Y') }}
-                </footer>
-                
-            </div>
-        </div>
-    @endforeach
-@endif
+        @if($book->reviews->isEmpty())
+            <p class="text-muted">No reviews yet. Be the first to review this book!</p>
+        @else
+            @foreach($book->reviews as $review)
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Rating: {{ $review->rating }} / 5</h5>
+                        <p class="card-text">{{ $review->content }}</p>
+                        
+                        <footer class="blockquote-footer">
+                            Reviewed by {{ $review->user->name ?? 'Anonymous' }} on {{ $review->created_at->format('F j, Y') }}
+                        </footer>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+        
 
 
 <h3 class="mt-5">Add a Review</h3>
@@ -54,7 +54,7 @@
 @endif
 
 
-<form action="{{ route('books.addReview', $book->id) }}" method="POST" class="mt-3">
+<form action="{{ route('addReview', ['type' => 'book', 'id' => $book->id]) }}" method="POST" class="mt-3">
     @csrf
     <div class="mb-3">
         <label for="content" class="form-label">Review</label>
@@ -72,6 +72,8 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit Review</button>
 </form>
+
+
 
     </div>
 </body>

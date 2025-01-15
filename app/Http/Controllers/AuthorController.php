@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -33,11 +34,13 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show($id) {
+        $author = Author::with('books', 'reviews')->findOrFail($id);
+        return view('authors.show', compact('author'));
     }
-
+    
+    
+    
     /**
      * Show the form for editing the specified resource.
      */
