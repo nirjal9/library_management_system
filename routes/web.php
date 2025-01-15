@@ -70,11 +70,30 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Author routes (admin only)
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     Route::resource('authors', AuthorController::class);
+//     Route::resource('publishers', PublisherController::class)->except(['show']);;
+//     Route::resource('borrowers', BorrowerController::class);
+// });
+
+// Author Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('authors', AuthorController::class);
-    Route::resource('publishers', PublisherController::class)->except(['show']);;
-    Route::resource('borrowers', BorrowerController::class);
+    Route::resource('authors', AuthorController::class)->except(['index', 'show']);
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
+    Route::get('authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
+});
+
+// Publisher Routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('publishers', PublisherController::class)->except(['index', 'show']);
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('publishers', [PublisherController::class, 'index'])->name('publishers.index');
+    Route::get('publishers/{publisher}', [PublisherController::class, 'show'])->name('publishers.show');
+});
+
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/books/{book}/borrow', [BookController::class, 'borrow'])->name('books.borrow');
@@ -100,6 +119,9 @@ Route::get('/publishers/{id}', [PublisherController::class, 'show'])->name('publ
 
 
 Route::post('/reviews/{type}/{id}', [ReviewController::class, 'addReview'])->name('addReview');
+
+Route::resource('borrowers', BorrowerController::class);
+
 
 
 

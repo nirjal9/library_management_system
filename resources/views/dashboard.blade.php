@@ -31,7 +31,10 @@
                         <ul class="list-disc list-inside">
                             <li><a href="{{ route('books.index') }}" class="text-blue-500 hover:underline">Manage Books</a></li>
                             <li><a href="{{ route('books.trashed') }}" class="text-blue-500 hover:underline">View Trashed Books</a></li>
-                            <li><a href="{{ url('/admin') }}" class="text-blue-500 hover:underline">Admin-Only Section</a></li>
+                            {{-- <li><a href="{{ url('/admin') }}" class="text-blue-500 hover:underline">Admin-Only Section</a></li> --}}
+                            <li><a href="{{ url('/borrowers') }}" class="text-blue-500 hover:underline">Manage Borrowers</a></li>
+                            <li><a href="{{ url('/publishers') }}" class="text-blue-500 hover:underline">Manage Publishers</a></li>
+                            <li><a href="{{ url('/authors') }}" class="text-blue-500 hover:underline">Manage Authors</a></li>
                         </ul>
                     </div>
                 </div>

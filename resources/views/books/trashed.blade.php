@@ -27,7 +27,7 @@
                 <tr>
                     <td>{{ $book->id }}</td>
                     <td>{{ $book->title }}</td>
-                    <td>{{ $book->authors }}</td>
+                    <td>{{ $book->authors->pluck('name')->join(', ') }}</td>
                     <td>{{ $book->isbn }}</td>
                     <td>
                         <form action="{{ route('books.restore', $book->id) }}" method="POST" style="display: inline;">
