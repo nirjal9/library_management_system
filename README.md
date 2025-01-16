@@ -19,8 +19,7 @@
 - [Installation Steps](#installation-steps)
 - [Usage Guide](#usage-guide)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ---
 
@@ -181,18 +180,4 @@ Follow these steps to set up the project locally:
 
 ---
 
-## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request.
-
----
-
-## License
-
-This project is open-source and available under the [MIT license](https://opensource.org/licenses/MIT).
-
----
-
-### Contact
-
-For questions or feedback, please contact the project owner.
