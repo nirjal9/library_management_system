@@ -14,11 +14,17 @@
                         <div class="mb-4">
                             <label for="title" class="block text-gray-700">Title</label>
                             <input type="text" name="title" id="title" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                            @error('title')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror           
                         </div>
 
                         <div class="mb-4">
                             <label for="authors" class="block text-gray-700">Authors</label>
                             <input type="text" name="authors" id="authors" placeholder="Enter authors separated by commas" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                            @error('authors')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror
                         </div>
                         
                         
@@ -26,11 +32,17 @@
                         <div class="mb-4">
                             <label for="isbn" class="block text-gray-700">ISBN</label>
                             <input type="text" name="isbn" id="isbn" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                            @error('isbn')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="published_year" class="block text-gray-700">Published Year</label>
                             <input type="number" name="published_year" id="published_year" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                            @error('published_year')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div>
@@ -42,6 +54,9 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('publisher_id')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror
                         </div>
                         
 
