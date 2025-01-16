@@ -26,8 +26,17 @@
     
 </head>
 <body>
+    
     <div class="container">
         <h1 class="my-4">Borrowing History</h1>
+
+                <!-- Back to Dashboard Button -->
+                <div class="mb-3">
+                    <a href="{{ Auth::user()->role === 'admin' ? route('dashboard') : route('user.dashboard') }}" 
+                       class="btn btn-primary">
+                       Back to Dashboard
+                    </a>
+                </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -54,6 +63,8 @@
         <!-- Add pagination links -->
         <div>
             {{ $borrows->links() }}
+        </div>
+ 
         </div>
     </div>
 </body>

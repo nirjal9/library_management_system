@@ -125,6 +125,7 @@ Route::post('/reviews/{type}/{id}', [ReviewController::class, 'addReview'])->nam
 Route::resource('borrowers', BorrowerController::class);
 
 
+Auth::routes(['register' => true]);
 
 
 

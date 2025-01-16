@@ -25,6 +25,7 @@
     <a href="{{ url('/books') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
         Go to Book List
     </a>
+
 </div>
 
                     <!-- Borrowed Books Section -->
@@ -66,7 +67,12 @@
                             </tbody>
                         </table>
                     </div>
-
+                    <div class="mb-6">
+                        <a href="{{ url('/borrows/history') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                           View Borrow History
+                        </a>
+                    
+                    </div>
                     <!-- Available Books Section -->
                     <div>
                         <h4 class="text-md font-semibold">Available Books</h4>

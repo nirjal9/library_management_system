@@ -12,7 +12,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link 
+                        :href="Auth::user()->role === 'admin' ? route('dashboard') : route('user.dashboard')" 
+                        :active="request()->routeIs('dashboard') || request()->routeIs('user.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
@@ -34,7 +36,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('profile.show')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
