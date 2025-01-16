@@ -62,9 +62,9 @@
 
         <!-- Add pagination links -->
         <div>
-            {{ $borrows->links() }}
+            {{ $borrows->links('pagination::bootstrap-4') }}
         </div>
- 
+        
         </div>
     </div>
 </body>

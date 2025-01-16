@@ -34,7 +34,7 @@ class BookController extends Controller
         }
     })->paginate(10);//Use pagination
 
-        //Retrive all books
+        // Retrive all books
         // $books =Book::all();
 
         // Pass the books to the index view
@@ -269,7 +269,12 @@ class BookController extends Controller
         return redirect()->back()->with('success', 'Review added successfully!');
     }
     
-    
+    public function publicBooks()
+    {
+    $books = Book::all(); // Fetch all books
+    return view('books.public', compact('books')); // Return the new public view
+    }
+
     
     
 }

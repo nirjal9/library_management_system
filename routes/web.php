@@ -129,5 +129,12 @@ Auth::routes(['register' => true]);
 
 
 
+Route::get('/public-books', [BookController::class, 'publicBooks'])->name('books.public');
+
+
+
+
+
+
 
 
